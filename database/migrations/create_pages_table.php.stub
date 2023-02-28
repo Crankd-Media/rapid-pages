@@ -1,0 +1,68 @@
+<?php
+
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class CreatePagesTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('pages', function (Blueprint $table) {
+            $table->id();
+            $table->string('title');
+            $table->string('slug')->unique();
+            $table->text('content');
+            $table->text('excerpt')->nullable();
+            $table->string('status')->default('draft');
+            $table->unsignedBigInteger('author_id');
+            $table->softDeletes();
+            $table->timestamps();
+        });
+
+         Schema::create('sections', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('slug');
+            $table->jsonb('fields')->nullable();
+            $table->timestamps();
+        });
+
+        Schema::create('section_settings', function (Blueprint $table) {
+            $table->id();
+            $table->jsonb('settings')->nullable();
+            $table->timestamps();
+        });
+
+        Schema::create('sectionables', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('section_id')->nullable();
+            $table->unsignedBigInteger('sectionables_id');
+            $table->string('sectionables_type');
+            $table->unsignedBigInteger('section_settings_id')->nullable();
+            $table->integer('order')->default(0);
+            $table->timestamps();
+            $table->foreign('section_id')->references('id')->on('sections')->onDelete('cascade');
+        });
+
+
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('pages');
+        Schema::dropIfExists('sections');
+        Schema::dropIfExists('section_settings');
+        Schema::dropIfExists('sectionable');
+    }
+}

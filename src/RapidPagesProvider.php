@@ -54,9 +54,21 @@ class RapidPagesProvider extends ServiceProvider
             return;
         }
 
+        // Config
         $this->publishes([
             self::CONFIG_FILE => config_path('rapid-pages.php'),
         ], 'rapid-pages-config');
+
+
+        // Models 
+        $this->publishes([
+            __DIR__ . '/Models' => app_path('Models'),
+        ], 'laravel-pages-models');
+
+        // Migrations 
+        $this->publishes([
+            __DIR__ . '/../database/migrations/create_pages_table.php.stub' => $this->getMigrationFileName('create_pages_table.php'),
+        ], 'laravel-pages-migrations');
     }
 
 
@@ -81,5 +93,21 @@ class RapidPagesProvider extends ServiceProvider
         // Blade::componentNamespace('Crankd\\LaravelPages\\View\\Components\\Navigation', 'stacked');
         // Blade::componentNamespace('Crankd\\LaravelPages\\View\\Components\\Navigation', 'sidebar');
         return $this;
+    }
+
+
+
+    protected function getMigrationFileName($migrationFileName): string
+    {
+        $timestamp = date('Y_m_d_His');
+
+        $filesystem = $this->app->make(Filesystem::class);
+
+        return Collection::make($this->app->databasePath() . DIRECTORY_SEPARATOR . 'migrations' . DIRECTORY_SEPARATOR)
+            ->flatMap(function ($path) use ($filesystem, $migrationFileName) {
+                return $filesystem->glob($path . '*_' . $migrationFileName);
+            })
+            ->push($this->app->databasePath() . "/migrations/{$timestamp}_{$migrationFileName}")
+            ->first();
     }
 }
