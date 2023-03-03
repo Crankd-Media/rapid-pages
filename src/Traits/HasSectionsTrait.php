@@ -27,7 +27,8 @@ trait HasSectionsTrait
         // get sections with the section settign relation
         $sections = $this->sections()->get();
         foreach ($sections as $section) {
-            $fieldValues = $section->getFieldValuesFromSettings($section);
+
+            $fieldValues = $section->getFieldValuesFromPivotModel(new SectionSetting(), 'section_settings_id');
             $section->fieldValues = $fieldValues;
         }
 
@@ -116,10 +117,9 @@ trait HasSectionsTrait
         $this->sections()->where('section_settings_id', $settingsId)->update(['order' => $newOrder]);
     }
 
+
     public function updateSectionSettings($settingsId, $settings, $format = false)
     {
-
-
         if ($format == true) {
             $values = [];
             foreach ($settings as $setting) {
@@ -131,12 +131,8 @@ trait HasSectionsTrait
             }
             $settings = $values;
         }
-
-        // echo '<pre>', print_r($settings, true), '</pre>';
-
         $section_settings = SectionSetting::find($settingsId);
         $section_settings->update(['settings' => $settings]);
-
         return $section_settings;
     }
 }

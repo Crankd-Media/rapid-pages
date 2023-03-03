@@ -81,17 +81,6 @@ class RapidPagesProvider extends ServiceProvider
     {
 
 
-        // Blade::component('rapid::page-index', CodeBlock::class);
-
-
-        // Navigation
-        // Blade::component('manage-fields', 'manage-fields');
-
-        // Blade::component('navigation.stacked', Stacked::class);
-        // Blade::component('navigation.sidebar', Sidebar::class);
-
-        // Blade::componentNamespace('Crankd\\LaravelPages\\View\\Components\\Navigation', 'stacked');
-        // Blade::componentNamespace('Crankd\\LaravelPages\\View\\Components\\Navigation', 'sidebar');
         return $this;
     }
 
