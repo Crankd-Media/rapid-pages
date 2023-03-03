@@ -60,32 +60,10 @@ class PageController extends Controller
     {
         $sections = Section::get();
         // unset settings from sections
-        foreach ($sections as $section) {
-            $values = [];
-            $fields = $section->fields;
 
-            foreach ($fields as $field) {
-                $field->value = null;
-                if ($field->type == 'link' && empty($field->value)) {
-                    $field->value = [
-                        'label' => $field->title,
-                        'show' => false,
-                        'target' => '_self',
-                        'type' => 'link',
-                        'url' => '',
-                        'title' => ''
-                    ];
-                }
-                $values[$field->key] = $field;
-            }
-
-            $section->fieldValues = $values;
-        }
 
         // dd($sections);
 
-        $page_sections = $page->getSections();
-        $page->sections = $page_sections;
 
         $compact = [
             'page',
@@ -95,6 +73,64 @@ class PageController extends Controller
 
         return view('frontend.page.edit', compact($compact));
     }
+
+
+    public function update(Request $request, Page $page)
+    {
+
+        $request->validate([
+            'title' => 'nullable',
+            'slug' => 'nullable',
+        ]);
+
+        $page->update([
+            'title' => ($request->title) ? $request->title : $page->title,
+            'slug' => $request->slug ? $request->slug : $page->slug,
+        ]);
+
+
+        if ($request->sections) {
+            // get the missing sections from pagesections and rquest sections and remove the ones that are not in the request
+            $pageSections = $page->sections()->get()->pluck('pivot.section_settings_id');
+            $requestSections = collect($request->sections)->pluck('pivot.section_settings_id');
+            $missingSectionsIds = $pageSections->diff($requestSections);
+
+            // get page sections by section settings id and remove
+            $missingSections = $page->sections()->whereIn('section_settings_id', $missingSectionsIds)->get();
+            foreach ($missingSections as $missingSection) {
+                $page->removeSection($missingSection);
+            }
+
+            $order = 0;
+            foreach ($request->sections as $section) {
+                if (isset($section['pivot'])) {
+                    $page->updateSectionOrder($section['pivot']['section_settings_id'], $order);
+                    $page->updateSectionSettings($section['pivot']['section_settings_id'], $section['fieldValues'], true);
+                } else {
+                    $sectionMedel = Section::find($section['id']);
+                    $page->addSection($sectionMedel, $order, $section['fieldValues']);
+                }
+                $order++;
+            }
+
+            $sections = $page->sections()->get();
+        }
+
+        // if ajax request
+        if ($request->ajax()) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Page updated successfully',
+                'sections' => $sections->toArray(),
+                'request' => $request->sections,
+            ], 200);
+        }
+
+
+        //  return back()->with('success', 'Page updated successfully');
+    }
+
+
 
     // destroy
     public function destroy(Page $page)

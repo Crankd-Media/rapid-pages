@@ -1,6 +1,6 @@
 <?php
 
-namespace Crankd\LaravelPages\Traits;
+namespace Crankd\RapidPages\Traits;
 
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
