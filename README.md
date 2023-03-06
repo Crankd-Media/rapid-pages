@@ -1,8 +1,8 @@
-# Rapid UI
+# Rapid Pages
+
+composer require crankd/rapid-pages
 
 ## LOAD JS FILES
-
-Crankd\RapidPages\RapidPagesProvider::class,
 
 php artisan vendor:publish --provider="Crankd\RapidPages\RapidPagesProvider"
 
