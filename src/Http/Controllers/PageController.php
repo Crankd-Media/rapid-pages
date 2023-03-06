@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Crankd\RapidPages\Http\Controllers;
 
 use App\Models\Page;
 use App\Models\Section;
 use Illuminate\Http\Request;
 use App\Models\SectionSetting;
+use App\Http\Controllers\Controller;
+
 
 class PageController extends Controller
 {

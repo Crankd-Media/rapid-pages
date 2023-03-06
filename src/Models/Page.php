@@ -12,6 +12,8 @@ class Page extends Model
 {
     use HasFactory;
     use PageTrait;
+    use HasSectionsTrait;
+
     // use slug as route key
 
 
