@@ -16,13 +16,14 @@ class SectionSetting extends Model implements HasMedia
     use InteractsWithMedia;
     use HasIndividualCustomFields;
 
-    protected $fillable = [
-        'settings',
-    ];
 
     public $rapid_custom_fields = [
         'fields' => null,
         'values' => 'settings'
+    ];
+
+    protected $fillable = [
+        'settings',
     ];
 
     // setting is json

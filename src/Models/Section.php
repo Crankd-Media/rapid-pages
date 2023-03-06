@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Casts\Json;
 use App\Casts\CustomFields;
 use App\Models\SectionSetting;
+use Spatie\MediaLibrary\HasMedia;
 
 use App\Traits\UseCustomFieldsTrait;
 use Illuminate\Database\Eloquent\Model;
@@ -15,7 +16,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Crankd\RapidCustomFields\Traits\HasIndividualCustomFields;
 
 
-class Section extends Model
+class Section extends Model implements HasMedia
 {
     use HasFactory;
     use UseCustomFieldsTrait;

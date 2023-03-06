@@ -16,7 +16,7 @@
 				@foreach ($pages as $page)
 					<tr>
 						<td>
-							<a href="{{ route('pages.edit', $page) }}">
+							<a href="{{ route('admin.pages.edit', $page) }}">
 								<div class="flex items-center">
 									<div class="ml-4">
 										<div class="text-sm font-medium text-gray-900">
@@ -36,7 +36,7 @@
 								class="mb-2 mr-2 text-indigo-600 hover:text-indigo-900">View</a>
 
 							<form class="inline-block"
-								action="{{ route('pages.destroy', $page) }}"
+								action="{{ route('admin.pages.destroy', $page) }}"
 								method="POST"
 								data-confirm="true">
 								@method('DELETE')

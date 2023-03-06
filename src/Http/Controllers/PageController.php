@@ -4,19 +4,33 @@ namespace Crankd\RapidPages\Http\Controllers;
 
 use App\Models\Page;
 use App\Models\Section;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\SectionSetting;
 use App\Http\Controllers\Controller;
 
-
 class PageController extends Controller
 {
 
-    // index
+    /*
+    |--------------------------------------------------------------------------
+    | Pages
+    |--------------------------------------------------------------------------
+    | 
+    */
     public function index()
     {
         $pages = Page::all();
-        return view('admin.page.index', compact('pages'));
+        $sections = Section::get();
+
+        $compact = [
+            'pages',
+            'sections',
+        ];
+
+        // get view from config
+        $view = config('rapid-pages.views.admin.pages.index');
+        return view($view, compact($compact));
     }
 
     public function show($slug = '')
@@ -34,15 +48,15 @@ class PageController extends Controller
             'page_sections',
         ];
 
-        return view('frontend.page.show', compact($compact));
+        // get view from config
+        $view = config('rapid-pages.views.app.page.show');
+        return view($view, compact($compact));
     }
 
     // create 
     public function create()
     {
-        // create random slug with uuid
-        $slug = \Str::uuid();
-
+        $slug = Str::uuid();
         $page = Page::create([
             'title' => 'Untitled',
             'slug' => $slug,
@@ -50,46 +64,37 @@ class PageController extends Controller
             'author_id' => auth()->user()->id,
         ]);
         $page_title = Section::where('slug', 'page_title')->first();
-        $page_title_settings = config('sections.section_settings.page_title.settings');
-
-        $page->addSection($page_title, 0, $page_title_settings);
+        $page->addSection($page_title, 0);
 
         // return page eidt
-        return redirect()->route('frontend.page.edit', $page);
+        $route = config('rapid-pages.routes.admin.pages.edit');
+        return redirect()->route($route, $page);
     }
 
     public function edit(Page $page)
     {
-        $sections = Section::get();
-        // unset settings from sections
-
-
-        // dd($sections);
-
-
         $compact = [
             'page',
-            'sections',
-            'page_sections',
         ];
 
-        return view('frontend.page.edit', compact($compact));
+        $view = config('rapid-pages.views.admin.pages.edit');
+        return view($view, compact($compact));
     }
 
+    // update 
 
     public function update(Request $request, Page $page)
     {
-
         $request->validate([
             'title' => 'nullable',
             'slug' => 'nullable',
+            'sections' => 'nullable|array',
         ]);
 
         $page->update([
             'title' => ($request->title) ? $request->title : $page->title,
             'slug' => $request->slug ? $request->slug : $page->slug,
         ]);
-
 
         if ($request->sections) {
             // get the missing sections from pagesections and rquest sections and remove the ones that are not in the request
@@ -128,18 +133,15 @@ class PageController extends Controller
             ], 200);
         }
 
-
-        //  return back()->with('success', 'Page updated successfully');
+        // return back()->with('success', 'Page updated successfully');
     }
 
 
-
-    // destroy
     public function destroy(Page $page)
     {
         $page->delete();
-
-        return redirect()->route('admin.pages.index');
+        $route = config('rapid-pages.routes.admin.pages.index');
+        return redirect()->route($route);
     }
 
     /*
@@ -148,18 +150,9 @@ class PageController extends Controller
     |--------------------------------------------------------------------------
     | 
     */
-    public function sections_index()
-    {
-        $sections = Section::get();
-        $compact = [
-            'sections',
-        ];
-        return view('admin.page.sections.index', compact($compact));
-    }
-
     public function sections_create()
     {
-        return view('admin.page.sections.create');
+        return view('admin.page.section-create');
     }
 
     public function sections_store(Request $request)
@@ -175,7 +168,9 @@ class PageController extends Controller
             'settings' => $request->settings,
         ]);
 
-        return redirect()->route('admin.sections.index');
+        $route = config('rapid-pages.routes.admin.sections.edit');
+
+        return redirect()->route($route, $section);
     }
 
     public function sections_edit(Section $section)
@@ -183,7 +178,9 @@ class PageController extends Controller
         $compact = [
             'section',
         ];
-        return view('admin.page.sections.edit', compact($compact));
+        $view = config('rapid-pages.views.admin.sections.edit');
+
+        return view('admin.page.section-edit', compact($compact));
     }
 
     public function sections_update(Request $request, Section $section)
@@ -196,8 +193,12 @@ class PageController extends Controller
         $section->update([
             'name' => ($request->name) ? $request->name : $section->name,
             'slug' => $request->slug ? $request->slug : $section->slug,
-            // 'fields' => $request->custom_fields,
+            'fields' => $request->custom_fields ? $request->custom_fields : [],
         ]);
+
+
+        // load section
+        $section = Section::find($section->id);
 
         // if ajax request
         if ($request->ajax()) {
@@ -207,12 +208,17 @@ class PageController extends Controller
             ]);
         }
 
-        return redirect()->route('admin.sections.index');
+        return back()->with('success', 'Section updated successfully');
     }
 
     public function sections_destroy(Section $section)
     {
         $section->delete();
-        return redirect()->route('admin.sections.index');
+        $route = config('rapid-pages.routes.admin.sections.index');
+        if ($route == null) {
+            $route = config('rapid-pages.routes.admin.pages.index');
+        }
+
+        return redirect()->route($route)->with('success', 'Section deleted successfully');
     }
 }

@@ -16,7 +16,7 @@
 				@foreach ($sections as $section)
 					<tr>
 						<td>
-							<a href="{{ route('sections.edit', $section) }}">
+							<a href="{{ route('admin.sections.edit', $section) }}">
 								<div class="flex items-center">
 									<div class="ml-4">
 										<div class="text-sm font-medium text-gray-900">
@@ -32,7 +32,7 @@
 						<td class="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
 
 							<form class="inline-block"
-								action="{{ route('sections.destroy', $section) }}"
+								action="{{ route('admin.sections.destroy', $section) }}"
 								method="POST"
 								data-confirm="true">
 

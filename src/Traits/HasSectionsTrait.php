@@ -123,7 +123,7 @@ trait HasSectionsTrait
         if ($format == true) {
             $values = [];
             foreach ($settings as $setting) {
-                if ($setting['type'] == 'repeater') {
+                if ($setting['type'] == 'repeater' && isset($setting['values'])) {
                     $values[$setting['key']]['values'] = $setting['values'];
                 } else {
                     $values[$setting['key']] = (isset($setting['value'])) ? $setting['value'] : null;
