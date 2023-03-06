@@ -1,5 +1,7 @@
 # Rapid Pages
 
+## COMPOSER
+
 ```
 composer require crankd/rapid-pages
 ```
@@ -11,7 +13,7 @@ php artisan vendor:publish --provider="Crankd\RapidPages\RapidPagesProvider"
 ```
 
 ```
-import "../../packages/crankd/rapid-pages/resources/js/rapid-pages.js";
+import "../crankd/rapid/js/rapid-pages.js";
 ```
 
 ## routes/web.php

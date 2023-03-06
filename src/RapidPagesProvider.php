@@ -14,9 +14,7 @@ class RapidPagesProvider extends ServiceProvider
 
     private const CONFIG_FILE = __DIR__ . '/../config/rapid-pages.php';
 
-    private const PATH_VIEWS = __DIR__ . '/../resources/views';
-
-    private const PATH_ASSETS = __DIR__ . '/../resources/js';
+    private const RESOURCES_PATH = __DIR__ . '/../resources/';
 
 
     /**
@@ -26,15 +24,12 @@ class RapidPagesProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->offerPublishing(); // Publish the config file
+        $this->offerPublishing();
 
-        $this->loadViewsFrom(self::PATH_VIEWS, 'rapid-pages'); // Load the views
+        $this->loadViewsFrom(self::RESOURCES_PATH . 'views', 'rapid-pages');
 
         $this->registerComponents(); // Register the components
 
-        $this->publishes([
-            self::PATH_ASSETS => public_path('crankd/rapid-pages/js'), // Publish the assets
-        ], 'rapid-pages-publishes');
     }
 
     /**
@@ -44,7 +39,7 @@ class RapidPagesProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(self::CONFIG_FILE, 'rapid');
+        $this->mergeConfigFrom(self::CONFIG_FILE, 'rapid-pages');
     }
 
     protected function offerPublishing()
@@ -59,16 +54,26 @@ class RapidPagesProvider extends ServiceProvider
             self::CONFIG_FILE => config_path('rapid-pages.php'),
         ], 'rapid-pages-config');
 
-
         // Models 
         $this->publishes([
             __DIR__ . '/Models' => app_path('Models'),
-        ], 'laravel-pages-models');
+        ], 'rapid-pages-models');
 
         // Migrations 
         $this->publishes([
             __DIR__ . '/../database/migrations/create_pages_table.php.stub' => $this->getMigrationFileName('create_pages_table.php'),
-        ], 'laravel-pages-migrations');
+        ], 'rapid-pages-migrations');
+
+
+        // Publish js
+        $this->publishes([
+            self::RESOURCES_PATH . 'js' => resource_path('crankd/rapid/js'), // Publish the assets
+        ], 'rapid-pages-js');
+
+        // Publish css
+        $this->publishes([
+            self::RESOURCES_PATH . 'css' => resource_path('crankd/rapid/css'), // Publish the assets
+        ], 'rapid-pages-css');
     }
 
 
@@ -79,8 +84,6 @@ class RapidPagesProvider extends ServiceProvider
      */
     private function registerComponents(): self
     {
-
-
         return $this;
     }
 
