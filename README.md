@@ -1,20 +1,33 @@
 # Rapid Pages
 
-## COMPOSER
+# Install
 
 ```
 composer require crankd/rapid-pages
 ```
 
-## LOAD JS FILES
-
 ```
 php artisan vendor:publish --provider="Crankd\RapidPages\RapidPagesProvider"
 ```
 
+# Resources
+
+## Js
+
 ```
+import "../crankd/rapid/js/rapid-ui.js";
 import "../crankd/rapid/js/rapid-pages.js";
 ```
+
+## Css
+
+```
+@import "../crankd/rapid/css/rapid-ui.css";
+@import "../crankd/rapid/css/rapid-pages.css";
+
+```
+
+# Routes
 
 ## routes/web.php
 
@@ -37,9 +50,12 @@ Route::prefix('admin')->name('admin.')->middleware($page_middleware)->group(func
     Route::patch('sections/{section}/update', [PageController::class, 'sections_update'])->name('sections.update');
     Route::delete('sections/{section}/destroy', [PageController::class, 'sections_destroy'])->name('sections.destroy');
 });
+
 Route::get('/{page:slug}', [PageController::class, 'show'])->name('pages.show');
 
 ```
+
+# Views
 
 ## views/admin/page/index.blade.php
 
@@ -87,8 +103,6 @@ Route::get('/{page:slug}', [PageController::class, 'show'])->name('pages.show');
 ```
 <x-rapid-pages::section-index :sections="$sections" />
 ```
-
-
 
 ## section-crud
 
