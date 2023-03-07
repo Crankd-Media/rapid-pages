@@ -64,26 +64,6 @@ Route::get('/{page:slug}', [PageController::class, 'show'])->name('pages.show');
 
 ```
 
-# Publish Views
-
-admin/page/index.blade.php
-admin/page/section-crud.blade.php
-
-app/page/edit.blade.php
-app/page/show.blade.php
-
-```
-php artisan vendor:publish --tag=rapid-pages-publishes
-
-
-```
-
-## /admin/page/index.blade.php
-
-```
-
-```
-
 # Components
 
 ## page-index
