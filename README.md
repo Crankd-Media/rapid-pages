@@ -7,8 +7,10 @@ composer require crankd/rapid-pages
 ```
 
 ```
+// all
 php artisan vendor:publish --provider="Crankd\RapidPages\RapidPagesProvider"
 
+// or
 php artisan vendor:publish --tag=rapid-pages-config
 php artisan vendor:publish --tag=rapid-pages-models
 php artisan vendor:publish --tag=rapid-pages-migrations
