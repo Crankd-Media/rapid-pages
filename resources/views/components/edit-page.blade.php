@@ -24,6 +24,9 @@
 	}
 	
 	$page_sections = $page->getSections();
+	
+	$update_page_route = config('rapid-pages.routes.admin.pages.update');
+	$route = route($update_page_route, $page);
 @endphp
 
 
@@ -62,6 +65,7 @@
 </div>
 
 
+{{-- TODO move this into Rapid UI --}}
 <style>
 	input[type=text],
 	input[type=email],

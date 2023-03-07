@@ -90,7 +90,9 @@
 		{{-- Rendew The Section Design --}}
 		@foreach ($sections as $section)
 			<template x-if="item.slug == '{{ $section->slug }}'">
+
 				{{-- <x-dynamic-component :component="'frontend.sections.' . $section->slug" /> --}}
+
 				<div class="py-16 text-center">
 					{{ $section->slug }}
 				</div>

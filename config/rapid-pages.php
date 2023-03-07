@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'section_path' => 'app.sections.',
     'routes' => [
         'admin' => [
             'prefix' => 'admin',
@@ -9,6 +10,8 @@ return [
                 'index' => 'admin.pages.index',
                 'create' => 'admin.pages.create',
                 'edit' => 'admin.pages.edit',
+                'update' => 'admin.pages.update',
+                'destroy' => 'admin.pages.destroy',
             ],
             'sections' => [
                 'index' => null,
@@ -36,8 +39,8 @@ return [
             ],
             'sections' => [
                 'index' => 'admin.section-index',
-                'create' => 'admin.section-create',
-                'edit' => 'admin.section-edit',
+                'create' => 'admin.section-crud',
+                'edit' => 'admin.section-crud',
             ],
         ],
         'app' => [

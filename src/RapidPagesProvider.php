@@ -6,7 +6,6 @@ use Illuminate\Support\Collection;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
-use Crankd\RapidPages\View\Components\CodeBlock;
 
 
 class RapidPagesProvider extends ServiceProvider

@@ -152,7 +152,8 @@ class PageController extends Controller
     */
     public function sections_create()
     {
-        return view('admin.page.section-create');
+        $view = config('rapid-pages.views.admin.sections.create');
+        return view($view);
     }
 
     public function sections_store(Request $request)
@@ -180,7 +181,7 @@ class PageController extends Controller
         ];
         $view = config('rapid-pages.views.admin.sections.edit');
 
-        return view('admin.page.section-edit', compact($compact));
+        return view($view, compact($compact));
     }
 
     public function sections_update(Request $request, Section $section)
