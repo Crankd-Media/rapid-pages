@@ -2,6 +2,10 @@
 
 return [
     'section_path' => 'app.sections.',
+    'layouts' => [
+        'admin' => 'admin-layout',
+        'app' =>  'guest-layout',
+    ],
     'routes' => [
         'admin' => [
             'prefix' => 'admin',

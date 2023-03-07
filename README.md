@@ -8,6 +8,14 @@ composer require crankd/rapid-pages
 
 ```
 php artisan vendor:publish --provider="Crankd\RapidPages\RapidPagesProvider"
+
+php artisan vendor:publish --tag=rapid-pages-config
+php artisan vendor:publish --tag=rapid-pages-models
+php artisan vendor:publish --tag=rapid-pages-migrations
+php artisan vendor:publish --tag=rapid-pages-js
+php artisan vendor:publish --tag=rapid-pages-css
+php artisan vendor:publish --tag=rapid-pages-views
+
 ```
 
 # Resources
@@ -24,7 +32,6 @@ import "../crankd/rapid/js/rapid-pages.js";
 ```
 @import "../crankd/rapid/css/rapid-ui.css";
 @import "../crankd/rapid/css/rapid-pages.css";
-
 ```
 
 # Routes
@@ -55,32 +62,23 @@ Route::get('/{page:slug}', [PageController::class, 'show'])->name('pages.show');
 
 ```
 
-# Views
+# Publish Views
 
-## views/admin/page/index.blade.php
+admin/page/index.blade.php
+admin/page/section-crud.blade.php
+
+app/page/edit.blade.php
+app/page/show.blade.php
+
+```
+php artisan vendor:publish --tag=rapid-pages-publishes
+
 
 ```
 
-```
-
-## resources/views/admin/page/section-crud.blade.php
+## /admin/page/index.blade.php
 
 ```
-<x-rapid-pages::section-index :sections="$sections" />
-```
-
-## views/frontend/page/edit.blade.php
-
-```
-	<x-rapid-pages::edit-page :page="$page"
-			route="{{ route('admin.pages.update', $page) }}" />
-
-```
-
-## views/frontend/page/edit.blade.php
-
-```
-
 
 ```
 
@@ -92,10 +90,16 @@ Route::get('/{page:slug}', [PageController::class, 'show'])->name('pages.show');
 <x-rapid-pages::page-index :pages="$pages" />
 ```
 
-## page-edit
+## edit-page
 
 ```
 <x-rapid-pages::edit-page :page="$page" />
+```
+
+## show-page
+
+```
+<x-rapid-pages::show-page :page="$page" />
 ```
 
 ## section-index
@@ -108,4 +112,12 @@ Route::get('/{page:slug}', [PageController::class, 'show'])->name('pages.show');
 
 ```
 <x-rapid-pages::section-crud :section="$section" />
+```
+
+# Config
+
+## get config values
+
+```
+$create_page_route = config('rapid-pages.routes.admin.pages.create');
 ```

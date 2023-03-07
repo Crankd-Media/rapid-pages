@@ -4,6 +4,8 @@
 	$update_sections_route = config('rapid-pages.routes.admin.sections.update');
 	$route = isset($section) ? route($update_sections_route, $section) : route($store_sections_route);
 @endphp
+
+
 <section class="py-12">
 	<div class="mx-auto max-w-7xl space-y-6 sm:px-6 lg:px-8">
 

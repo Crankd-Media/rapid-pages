@@ -29,6 +29,7 @@ class RapidPagesProvider extends ServiceProvider
 
         $this->registerComponents(); // Register the components
 
+
     }
 
     /**
@@ -73,6 +74,11 @@ class RapidPagesProvider extends ServiceProvider
         $this->publishes([
             self::RESOURCES_PATH . 'css' => resource_path('crankd/rapid/css'), // Publish the assets
         ], 'rapid-pages-css');
+
+        $this->publishes([
+            self::RESOURCES_PATH . 'views/publish/admin' => resource_path('views/admin/page'),
+            self::RESOURCES_PATH . 'views/publish/app' => resource_path('views/app/page'),
+        ], 'rapid-pages-views');
     }
 
 
