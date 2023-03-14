@@ -18,11 +18,11 @@
 			@csrf
 			<div class="space-y-4">
 
-				<x-rapid-ui::input.text name="name"
+				<x-rapid::input.text name="name"
 					label="Name"
 					:value="old('name', $editing ? $section->name : '')" />
 
-				<x-rapid-ui::input.text name="slug"
+				<x-rapid::input.text name="slug"
 					label="Slug"
 					:value="old('slug', $editing ? $section->slug : '')" />
 
